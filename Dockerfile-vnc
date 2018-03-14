@@ -1,0 +1,16 @@
+FROM ubuntu:16.04
+
+RUN  apt-get update
+
+RUN  apt-get install -y --no-install-recommends --allow-unauthenticated
+RUN  apt-get install -y supervisor
+RUN  apt-get install -y language-pack-zh-hant language-pack-gnome-zh-hant
+RUN  apt-get install -y x11vnc xvfb --fix-missing
+RUN  apt-get install -y eclipse
+RUN  apt-get autoclean autoremove && rm -rf /var/lib/apt/lists/*
+
+RUN  mkdir /.vnc
+RUN  x11vnc -storepasswd 123456 /.vnc/passwd
+
+ADD  supervisord.conf /
+CMD  supervisord -c /supervisord.conf
